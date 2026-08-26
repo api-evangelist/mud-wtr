@@ -1,0 +1,64 @@
+generated: '2026-08-26'
+method: probed
+source: >-
+  publicApiVersions query against https://mudwtr.com/api/2025-10/graphql.json and
+  https://mudwtr.com/.well-known/ucp, probed 2026-08-26
+description: >-
+  MUD\WTR publishes no versioning or deprecation policy of its own. Its machine surfaces inherit the
+  Shopify platform lifecycle, and both of them state it in-band: the Storefront GraphQL API answers a
+  publicApiVersions query listing which dated versions are supported, and the UCP profile lists the
+  protocol versions the merchant accepts. Those in-band declarations are recorded here as observed.
+versioning:
+  scheme: date-based
+  format: YYYY-MM
+  placement: url-path
+  example: https://mudwtr.com/api/2025-10/graphql.json
+  cadence: quarterly
+  current: '2026-07'
+  served_by_default: '2025-10'
+  served_by_default_note: >-
+    A request to /api/2025-01/graphql.json returned an x-shopify-api-version response header of
+    2025-10, i.e. an unsupported version is upgraded rather than refused. /api/1999-01/graphql.json
+    returns 404.
+  supported:
+  - version: '2025-10'
+    supported: true
+  - version: '2026-01'
+    supported: true
+  - version: '2026-04'
+    supported: true
+  - version: '2026-07'
+    supported: true
+    label: Latest
+  - version: '2026-10'
+    supported: false
+    label: Release candidate
+  - version: unstable
+    supported: false
+deprecation:
+  policy_published: false
+  in_band_signal: true
+  mechanism: graphql-deprecated-directive
+  detail: >-
+    Deprecated fields and enum values are marked with @deprecated in the introspected schema
+    (graphql/mud-wtr-storefront.graphql), so an agent can detect deprecation from the contract itself.
+    Versions drop off the publicApiVersions supported list rather than being announced on a MUD\WTR
+    page.
+  sunset_header: false
+  rfc8594: false
+protocol_versions:
+  ucp:
+    current: '2026-04-08'
+    supported: ['2026-04-08', '2026-01-23']
+    source: https://mudwtr.com/.well-known/ucp
+  mcp:
+    negotiated: '2025-06-18'
+    source: MCP initialize response from both servers
+status_page:
+  published: false
+  detail: >-
+    No status.mudwtr.com or status page was found and none is referenced from robots.txt, agents.md,
+    llms.txt or the storefront footer. No StatusPage pointer was emitted.
+changelog:
+  published: false
+  detail: No dated API changelog is served on any mudwtr.com host.

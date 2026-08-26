@@ -1,0 +1,30 @@
+generated: '2026-08-26'
+method: probed
+source: https://mudwtr.com/.well-known/oauth-authorization-server
+docs: https://shopify.dev/docs/api/customer
+description: >-
+  OAuth scopes advertised by the authorization server MUD\WTR's own host points at. There is no
+  OpenAPI with oauth2 securitySchemes to derive from; these values are read verbatim from the
+  scopes_supported array of the discovery document.
+authorization_server: https://shopify.com/authentication/13794345014
+authorization_endpoint: https://account.mudwtr.com/authentication/oauth/authorize
+token_endpoint: https://account.mudwtr.com/authentication/oauth/token
+scope_count: 4
+scopes:
+- name: openid
+  description: Standard OpenID Connect scope; requests an ID token identifying the customer.
+  category: identity
+- name: email
+  description: Releases the customer's email and email_verified claims.
+  category: identity
+- name: customer-account-api:full
+  description: Full access to the Customer Account API on behalf of the signed-in customer.
+  category: account
+- name: customer-account-mcp-api:full
+  description: >-
+    Full access to the Customer Account MCP API on behalf of the signed-in customer. No anonymous
+    customer-account MCP endpoint was found on mudwtr.com; /customer/api/mcp returned 404.
+  category: agent
+notes:
+- Scopes are Shopify customer-account scopes bound to this shop, not MUD\WTR-authored scopes.
+- The Storefront GraphQL API and the /api/mcp storefront MCP server require no scope at all.

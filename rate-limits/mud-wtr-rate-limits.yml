@@ -1,0 +1,46 @@
+generated: '2026-08-26'
+method: probed
+source: https://mudwtr.com/agents.md and response-header inspection of every surface, 2026-08-26
+description: >-
+  MUD\WTR states that its MCP endpoint is rate-limited but publishes no numbers, and no
+  RateLimit-*/X-RateLimit-*/Retry-After header was present on any successful response observed
+  during this pass. The one machine-readable cost signal on the surface is the GraphQL query-cost
+  figure returned in extensions.
+limit_count: 0
+limits: []
+documented_policy:
+- surface: MCP (https://mudwtr.com/api/ucp/mcp, https://mudwtr.com/api/mcp)
+  statement: >-
+    "Respect rate limits. The MCP endpoint is rate-limited per IP. Back off on 429 responses."
+  scope: per-ip
+  window: not published
+  limit: not published
+  status_on_exhaustion: 429
+  source: https://mudwtr.com/agents.md
+runtime_signals:
+- surface: https://mudwtr.com/api/2025-10/graphql.json
+  signal: extensions.cost.requestedQueryCost
+  observed: true
+  examples:
+  - query: '{shop{name description primaryDomain{url}}}'
+    requestedQueryCost: 3
+  - query: '{publicApiVersions{handle supported displayName}}'
+    requestedQueryCost: 1
+  - query: '{products(first:5){edges{node{id title}}}}'
+    requestedQueryCost: 7
+  note: >-
+    Only requestedQueryCost was returned; the actualQueryCost and throttleStatus fields (currentlyAvailable,
+    maximumAvailable, restoreRate) that would let an agent budget against a leaky bucket were absent
+    from every response observed. An agent can price a query but cannot see its remaining budget.
+headers_observed:
+  ratelimit: []
+  x_ratelimit: []
+  retry_after: []
+  other:
+  - x-request-id
+  - x-shopify-api-version
+  - x-shopify-ucp-mcp-api-version
+  - x-dc
+notes:
+- No documented limit exists for the Storefront GraphQL API or the /products.json, /collections.json and /cart.js endpoints on any mudwtr.com page.
+- No 429 was triggered during this pass; probing was deliberately light.

@@ -1,0 +1,10 @@
+{
+    "resource": "https://mudwtr.com",
+    "authorization_servers": [
+        "https://account.mudwtr.com",
+        "https://shopify.com/authentication/13794345014"
+    ],
+    "bearer_methods_supported": [
+        "header"
+    ]
+}

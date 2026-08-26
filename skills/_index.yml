@@ -1,0 +1,41 @@
+generated: '2026-08-26'
+method: generated
+source: >-
+  Authored from mcp/mud-wtr-ucp-mcp-tools.json, mcp/mud-wtr-storefront-mcp-tools.json and
+  graphql/mud-wtr-storefront.graphql — all captured live from mudwtr.com on 2026-08-26. Every tool
+  name, GraphQL field, error code and policy statement quoted in these skills is present in one of
+  those artifacts or on a mudwtr.com page recorded in this repo.
+description: >-
+  MUD\WTR publishes no developer documentation and no OpenAPI, so these skills are grounded in the
+  live MCP tool schemas and the introspected Storefront GraphQL schema instead. They exist because
+  the store's own agents.md invites agents to transact and then imposes rules — buyer approval before
+  payment, a required idempotency key, a 30-day out-of-band refund window — that an agent will not
+  discover from the tool list alone.
+skills:
+- name: mud-wtr-browse-catalog
+  file: mud-wtr-browse-catalog.md
+  api: mud-wtr-storefront-mcp
+  summary: Anonymous catalog search, product detail and policy lookup across MCP, GraphQL and the storefront JSON endpoints.
+  auth: none
+- name: mud-wtr-build-cart
+  file: mud-wtr-build-cart.md
+  api: mud-wtr-storefront-mcp
+  summary: Create and revise a cart, apply discounts and gift cards, and undo every cart-level change.
+  auth: none
+- name: mud-wtr-agent-checkout
+  file: mud-wtr-agent-checkout.md
+  api: mud-wtr-ucp-commerce-mcp
+  summary: The full UCP checkout flow, with the store's buyer-approval rule, the required idempotency key, and what can and cannot be reversed.
+  auth: agent-jwt
+provider_published_skills:
+  found: false
+  probed:
+  - url: https://mudwtr.com/agents.md
+    status: 200
+    note: >-
+      An agent instruction document, not a packaged skill. It recommends installing Shopify's
+      cross-store skill at https://shop.app/SKILL.md, which is Shopify's artifact and not MUD\WTR's,
+      so it was not saved here.
+  - url: https://mudwtr.com/llms.txt
+    status: 200
+    note: mirrors agents.md

@@ -1,0 +1,46 @@
+generated: '2026-08-26'
+method: probed
+source: live probes of https://mudwtr.com/.well-known/* on 2026-08-26
+description: >-
+  Results of probing the /.well-known/ discovery surface on every host named in apis.yml. mudwtr.com is
+  a Shopify-hosted storefront; the OAuth/OIDC metadata it serves is Shopify's customer-account
+  authorization server bound to this shop (issuer https://shopify.com/authentication/13794345014,
+  endpoints on account.mudwtr.com), and /.well-known/ucp is this merchant's own Universal Commerce
+  Protocol profile naming MUD\WTR as the merchant (merchant_origin mudwtr.com,
+  mud-wtr.myshopify.com). Paths that returned an HTML 404 page are recorded as absent and not saved.
+hosts:
+- host: https://mudwtr.com
+  documents:
+  - path: /.well-known/ucp
+    status: 200
+    type: application/json
+    file: mud-wtr-ucp.json
+  - path: /.well-known/openid-configuration
+    status: 200
+    type: application/json
+    file: mud-wtr-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    type: application/json
+    file: mud-wtr-oauth-authorization-server.json
+    note: byte-identical to the openid-configuration document
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    type: application/json
+    file: mud-wtr-oauth-protected-resource.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/mcp.json
+    status: 404
+notes:
+- No A2A agent card is served at either /.well-known/agent-card.json or the legacy
+  /.well-known/agent.json; both return an HTML 404. No a2a/ artifact was written.
+- No security.txt is published, so no SecurityTxt pointer was emitted.

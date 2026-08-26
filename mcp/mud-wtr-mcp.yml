@@ -1,0 +1,132 @@
+generated: '2026-08-26'
+method: probed
+status: published
+source: https://mudwtr.com/agents.md
+description: >-
+  MUD\WTR serves TWO live, remote Model Context Protocol servers from its own domain, both advertised
+  in its robots.txt, /agents.md and /llms.txt. They are Shopify platform servers bound to this
+  merchant's shop (shop_id 13794345014, mud-wtr.myshopify.com) and served under mudwtr.com, so the
+  endpoints, the catalog they expose and the carts/checkouts they create are MUD\WTR's. Tool lists
+  below were captured verbatim from live `tools/list` calls on 2026-08-26 and saved alongside this
+  file with their full JSON Schema inputSchemas.
+deployment:
+  mode: remote
+  endpoint: https://mudwtr.com/api/ucp/mcp
+  auth: none
+  verified: probed
+  checked: '2026-08-26'
+  note: >-
+    `tools/list` answers anonymously on both servers. Invocation differs: /api/mcp executes
+    tools/call anonymously (search_catalog returned real MUD\WTR products during the probe), while
+    /api/ucp/mcp returns error -32000 "AuthenticationRequired — a valid JWT is required" plus a
+    required `meta.ucp-agent.profile` URI, so its write path is gated by Shopify agent
+    authentication. No stdio package is published for either server.
+servers:
+- name: universal-commerce
+  server_version: 0.1.0
+  endpoint: https://mudwtr.com/api/ucp/mcp
+  alternate_endpoint: https://mud-wtr.myshopify.com/api/ucp/mcp
+  transport: http
+  mcp_protocol_version: '2025-06-18'
+  ucp_version: '2026-04-08'
+  api_version_header: 'x-shopify-ucp-mcp-api-version: 2026-04-08'
+  capabilities:
+    tools: {listChanged: true}
+    prompts: {listChanged: true}
+    resources: {listChanged: true}
+    logging: {}
+  auth:
+    list: none
+    call: jwt
+    detail: >-
+      tools/call requires a Shopify agent JWT and a UCP agent profile URI passed as
+      meta.ucp-agent.profile. Error -32000 AuthenticationRequired points at
+      https://shopify.dev/docs/agents/get-started/authentication
+  tools_file: mud-wtr-ucp-mcp-tools.json
+  tool_count: 13
+  tools:
+  - name: search_catalog
+    category: catalog
+    description: Search for products from the online store, hosted on Shopify.
+  - name: lookup_catalog
+    category: catalog
+    description: Look up multiple products or variants by identifier.
+  - name: get_product
+    category: catalog
+    description: Retrieve complete product detail by identifier. Returns a singular product.
+  - name: create_cart
+    category: cart
+    description: Creates a new cart.
+  - name: get_cart
+    category: cart
+    description: Get the cart contents.
+  - name: update_cart
+    category: cart
+    description: Perform updates to a cart.
+  - name: cancel_cart
+    category: cart
+    description: Cancels a cart.
+  - name: create_checkout
+    category: checkout
+    description: Creates a checkout. Returns line items, totals, discounts and taxes.
+  - name: get_checkout
+    category: checkout
+    description: Returns details about the checkout, including line items, totals, discounts and taxes.
+  - name: update_checkout
+    category: checkout
+    description: Updates a checkout.
+  - name: complete_checkout
+    category: checkout
+    description: >-
+      Completes a checkout and returns the order ID / Thank You Page URL. Buyer approval is required
+      before payment, per the store's own robots.txt and agents.md.
+  - name: cancel_checkout
+    category: checkout
+    description: Cancels a checkout.
+  - name: get_order
+    category: order
+    description: Get the details of an order.
+- name: storefront-renderer
+  server_version: 0.1.0
+  endpoint: https://mudwtr.com/api/mcp
+  transport: http
+  mcp_protocol_version: '2025-06-18'
+  capabilities:
+    tools: {listChanged: true}
+    prompts: {listChanged: true}
+    resources: {listChanged: true}
+    logging: {}
+  auth:
+    list: none
+    call: none
+    detail: >-
+      Anonymous end to end. A probe of tools/call search_catalog {"catalog":{"query":"rise"}} on
+      2026-08-26 returned real MUD\WTR product records with gid://shopify/Product identifiers.
+  tools_file: mud-wtr-storefront-mcp-tools.json
+  tool_count: 5
+  tools:
+  - name: search_catalog
+    category: catalog
+    description: Search for products from the online store, hosted on Shopify.
+  - name: get_product_details
+    category: catalog
+    description: >-
+      Look up a product by ID; pass `options` to select a specific variant, plus country/language.
+  - name: get_cart
+    category: cart
+    description: Get the cart including items, shipping options, discount info and checkout URL.
+  - name: update_cart
+    category: cart
+    description: >-
+      Add/remove/update line items, buyer identity, delivery addresses and options, discount codes,
+      gift cards and note in one consolidated call.
+  - name: search_shop_policies_and_faqs
+    category: content
+    description: Get facts about the store's policies, products or services.
+discovery:
+- source: https://mudwtr.com/robots.txt
+  note: names the UCP discovery document and the UCP/MCP endpoint in a comment block
+- source: https://mudwtr.com/.well-known/ucp
+  note: UCP merchant profile declaring transport mcp and the endpoint
+- source: https://mudwtr.com/agents.md
+  note: canonical agent-facing description of the store; /llms.txt mirrors it

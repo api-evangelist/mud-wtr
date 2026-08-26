@@ -1,0 +1,150 @@
+generated: '2026-08-26'
+method: derived
+source: graphql/mud-wtr-storefront-introspection.json (anonymous introspection, 2026-08-26)
+description: >-
+  Entity/relationship graph derived from the Storefront GraphQL schema MUD\WTR serves. Relationships
+  are read from field types and connection edges, not inferred from naming. Identifiers across the
+  whole surface are Shopify global IDs of the form gid://shopify/<Type>/<numeric>, which is also the
+  identifier the MCP tools accept and return.
+identifiers:
+  scheme: global-id
+  format: 'gid://shopify/{Type}/{id}'
+  observed_examples:
+  - 'gid://shopify/Product/2296107466806'
+  - 'gid://shopify/Checkout/abc123 (documented in the get_checkout tool description)'
+  secondary:
+    handle: URL-safe slug used by productByHandle, collectionByHandle, pageByHandle, blogByHandle
+    numeric: legacy numeric ids returned by /products.json and /collections.json
+entities:
+- name: Shop
+  root_field: shop
+  description: The store itself — name, description, money format, policies, payment settings, brand.
+- name: Product
+  root_fields: [product, productByHandle, products, productRecommendations]
+  description: A sellable item with variants, media, options, tags, SEO and metafields.
+- name: ProductVariant
+  description: A purchasable configuration of a Product; the merchandise a cart line points at.
+- name: Collection
+  root_fields: [collection, collectionByHandle, collections]
+- name: Cart
+  root_field: cart
+  description: The agent's working object — lines, cost, buyer identity, delivery groups, discounts, checkoutUrl.
+- name: CartLine
+  description: One merchandise line on a cart.
+- name: Order
+  description: Reachable only through Customer; carries lineItems, fulfillment and refund totals.
+- name: Customer
+  root_field: customer
+  description: Requires a customer access token.
+- name: MailingAddress
+- name: Blog
+  root_fields: [blog, blogByHandle, blogs]
+- name: Article
+  root_fields: [article, articles]
+- name: Page
+  root_fields: [page, pageByHandle, pages]
+- name: Menu
+  root_field: menu
+- name: Metaobject
+  root_fields: [metaobject, metaobjects]
+- name: Location
+  root_field: locations
+- name: SellingPlanGroup
+  description: Subscription/auto-ship plans attached to a product.
+relationships:
+- from: Shop
+  to: ShopPolicy
+  type: has_many
+  via: [privacyPolicy, refundPolicy, shippingPolicy, subscriptionPolicy, termsOfService]
+- from: Product
+  to: ProductVariant
+  type: has_many
+  via: variants
+- from: Product
+  to: ProductVariant
+  type: has_one
+  via: selectedOrFirstAvailableVariant
+- from: Product
+  to: Collection
+  type: has_many
+  via: collections
+- from: Product
+  to: Image
+  type: has_many
+  via: images
+- from: Product
+  to: SellingPlanGroup
+  type: has_many
+  via: sellingPlanGroups
+- from: Collection
+  to: Product
+  type: has_many
+  via: products
+- from: Cart
+  to: CartLine
+  type: has_many
+  via: lines
+- from: CartLine
+  to: ProductVariant
+  type: belongs_to
+  via: merchandise
+- from: Cart
+  to: CartBuyerIdentity
+  type: has_one
+  via: buyerIdentity
+- from: Cart
+  to: CartDeliveryGroup
+  type: has_many
+  via: deliveryGroups
+- from: Cart
+  to: CartDiscountCode
+  type: has_many
+  via: discountCodes
+- from: Cart
+  to: AppliedGiftCard
+  type: has_many
+  via: appliedGiftCards
+- from: CartBuyerIdentity
+  to: Customer
+  type: belongs_to
+  via: customer
+- from: Customer
+  to: Order
+  type: has_many
+  via: orders
+- from: Customer
+  to: MailingAddress
+  type: has_many
+  via: addresses
+- from: Customer
+  to: MailingAddress
+  type: has_one
+  via: defaultAddress
+- from: Order
+  to: OrderLineItem
+  type: has_many
+  via: lineItems
+- from: Order
+  to: Fulfillment
+  type: has_many
+  via: successfulFulfillments
+- from: Order
+  to: MailingAddress
+  type: has_one
+  via: shippingAddress
+- from: Order
+  to: MailingAddress
+  type: has_one
+  via: billingAddress
+- from: Blog
+  to: Article
+  type: has_many
+  via: articles
+- from: Article
+  to: Blog
+  type: belongs_to
+  via: blog
+counts:
+  types: 414
+  query_root_fields: 34
+  mutation_fields: 41

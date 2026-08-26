@@ -1,0 +1,150 @@
+generated: '2026-08-26'
+method: derived
+source: >-
+  Derived from graphql/mud-wtr-storefront.graphql, mcp/mud-wtr-ucp-mcp-tools.json,
+  mcp/mud-wtr-storefront-mcp-tools.json and live probes 2026-08-26; policy text read from
+  https://mudwtr.com/policies/refund-policy and https://mudwtr.com/agents.md
+description: >-
+  Cross-cutting runtime semantics an agent needs before it calls MUD\WTR's surfaces. MUD\WTR itself
+  publishes no developer conventions page; every rule below is read out of the contracts its host
+  actually serves or out of a policy page on mudwtr.com.
+auth_style:
+  graphql: none for public data; X-Shopify-Customer-Access-Token for customer-scoped fields
+  storefront_mcp: none
+  ucp_mcp: Shopify agent JWT plus meta.ucp-agent.profile URI
+  see: authentication/mud-wtr-authentication.yml
+idempotency:
+  supported: true
+  surfaces:
+  - surface: UCP Commerce MCP — complete_checkout
+    mechanism: request field
+    field: meta.idempotency-key
+    required: true
+    detail: >-
+      complete_checkout's inputSchema declares meta.idempotency-key as a REQUIRED string, described
+      as "An idempotency key for completing the checkout." An agent cannot finalise a purchase
+      without supplying one, so double-charge protection is mandatory rather than optional.
+  - surface: Storefront GraphQL — shopPayPaymentRequestSessionSubmit
+    mechanism: argument
+    field: 'idempotencyKey: String!'
+    required: true
+    detail: >-
+      Replay of a used key surfaces as
+      UserErrorsShopPayPaymentRequestSessionUserErrorsCode.IDEMPOTENCY_KEY_ALREADY_USED.
+  scope: per checkout / per payment-request session
+  retention: not published
+  header: null
+  note: >-
+    Idempotency is confined to the payment-completion path. Cart mutations and catalog reads carry no
+    idempotency key; cart mutations are naturally idempotent in effect because they set state rather
+    than append.
+pagination:
+  graphql:
+    style: cursor
+    spec: GraphQL Cursor Connections (Relay)
+    params: [first, after, last, before]
+    response_fields: [pageInfo.hasNextPage, pageInfo.hasPreviousPage, pageInfo.startCursor, pageInfo.endCursor, edges.cursor]
+  json:
+    style: page-and-limit
+    params: [limit, page]
+    example: 'GET https://mudwtr.com/products.json?limit=1&page=2'
+    probed: '2026-08-26'
+    note: Verified live; returns a different product on page 2 with the same limit.
+  mcp:
+    style: not-exposed
+    note: search_catalog and lookup_catalog expose no cursor or page argument in their inputSchema.
+filtering_and_expansion:
+  graphql:
+    - Connection fields accept `query` search syntax plus `sortKey`/`reverse` on products, collections and search.
+    - Selection-set shaping replaces sparse-fieldset parameters; there is no `fields=` convention.
+    - Product.variantBySelectedOptions and Product.selectedOrFirstAvailableVariant resolve a variant from options.
+  mcp:
+    - get_product_details accepts an `options` object to select a variant, plus `country` and `language`.
+metadata:
+  mechanism: metafields
+  detail: >-
+    Cart, Product, Collection, Page, Article, Shop and Customer all expose `metafield(namespace,key)`
+    and `metafields`; carts additionally support cartMetafieldsSet and cartMetafieldDelete.
+request_tracing:
+  header: x-request-id
+  observed: true
+  detail: >-
+    Both the MCP and GraphQL endpoints return an x-request-id on every response
+    (e.g. 48a66f13-5dde-45d8-84e4-df961063b9f1-1787739164). The UCP MCP endpoint additionally
+    returns x-shopify-ucp-mcp-api-version, and GraphQL returns x-shopify-api-version.
+versioning:
+  see: lifecycle/mud-wtr-lifecycle.yml
+  summary: Dated quarterly versions in the URL path; UCP and MCP protocol versions negotiated in-band.
+error_envelope:
+  graphql:
+    shape: 'errors[] { message, locations[], path[], extensions { code, typeName, fieldName } }'
+    http_status_on_error: 200
+    note: A malformed query returns HTTP 200 with an errors[] array; read the body, not the status.
+    user_errors: 'Mutations return a typed *UserError payload (CartUserError, CustomerUserError, …) with code/field/message alongside data.'
+  mcp:
+    shape: 'JSON-RPC 2.0 error { code, message, data }'
+    http_status_on_error: 200
+  see: errors/mud-wtr-problem-types.yml
+rate_limit_signalling:
+  see: rate-limits/mud-wtr-rate-limits.yml
+  summary: >-
+    No RateLimit-* or X-RateLimit-* headers were observed. GraphQL returns a query-cost figure in
+    extensions.cost.requestedQueryCost; agents.md states the MCP endpoint is rate-limited per IP with
+    429 back-off.
+dry_run_mode:
+  supported: false
+  detail: >-
+    No test mode, sandbox store, test key prefix or preview flag is published. cartPrepareForCompletion
+    returns totals before submission, which is a preview of cost but not a rehearsal of the write.
+  see: null
+reversibility:
+  grade: documented
+  applicable: true
+  summary: >-
+    Every write surface an agent can reach has a reversal operation, but only the out-of-band refund
+    path carries a stated window. Cart and checkout cancellation are callable and immediate; refunds
+    are not an API operation at all.
+  surfaces:
+  - write_surface: checkout
+    operation: complete_checkout
+    reversal: cancel_checkout
+    reversal_type: api
+    server: https://mudwtr.com/api/ucp/mcp
+    window_stated: false
+    grade: documented
+    note: >-
+      cancel_checkout is published in tools/list with a required checkout id. No docs state how long
+      after creation a checkout may be cancelled, or whether it can be cancelled after
+      complete_checkout succeeds.
+  - write_surface: cart
+    operation: create_cart / update_cart
+    reversal: cancel_cart
+    reversal_type: api
+    server: https://mudwtr.com/api/ucp/mcp
+    window_stated: false
+    grade: documented
+    note: >-
+      On the Storefront GraphQL side the equivalent reversals are cartLinesRemove,
+      cartDiscountCodesUpdate (to empty) and cartGiftCardCodesRemove; there is no cart-level cancel
+      mutation.
+  - write_surface: order
+    operation: complete_checkout (order created)
+    reversal: refund
+    reversal_type: out-of-band
+    window_stated: true
+    window: 30 days from original purchase date
+    exclusions:
+    - Open tins are not refundable at all.
+    docs: https://mudwtr.com/policies/refund-policy
+    grade: documented
+    note: >-
+      The refund window is stated verbatim in the store's published refund policy — "MUD\WTR does not
+      offer refunds for ANY REASON on orders placed more than 30 days from original purchase date" —
+      but there is no refund, void or reverse operation on any published surface. The reversal is a
+      human process initiated by emailing drink@mudwtr.com, so an agent cannot take the action back
+      itself. Graded `documented` rather than `verified` for that reason: the window is real, the
+      callable reversal is not.
+  agent_guidance:
+  - Cancel is cheap up to the moment of completion; treat complete_checkout as the point of no return for an agent.
+  - Both the store's robots.txt and agents.md forbid completing payment without contemporaneous buyer approval, which is the store's own mitigation for irreversibility.
+  - After completion, an agent's only remedy is to tell the buyer to email drink@mudwtr.com within 30 days of purchase.

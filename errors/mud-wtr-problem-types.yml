@@ -1,0 +1,88 @@
+generated: '2026-08-26'
+method: derived
+source: >-
+  Derived from the error enums in graphql/mud-wtr-storefront-introspection.json and from live error
+  responses observed against https://mudwtr.com/api/ucp/mcp and
+  https://mudwtr.com/api/2025-10/graphql.json on 2026-08-26
+format: graphql-user-errors + jsonrpc-error
+rfc9457: false
+description: >-
+  MUD\WTR publishes no error reference. This catalogue is derived from the two error envelopes its
+  surfaces actually emit — the JSON-RPC error object on MCP and the GraphQL errors[]/typed
+  *UserError payloads — plus the typed error-code enums carried in the introspected schema. No
+  application/problem+json is served anywhere, so there are no RFC 9457 problem types.
+envelopes:
+- surface: MCP (both servers)
+  transport: JSON-RPC 2.0 over HTTP POST
+  http_status_on_error: 200
+  shape: '{ "jsonrpc": "2.0", "id": <n>, "error": { "code": <int>, "message": <string>, "data": <string|object> } }'
+- surface: Storefront GraphQL
+  transport: HTTP POST
+  http_status_on_error: 200
+  shape: '{ "errors": [ { "message", "locations", "path", "extensions": { "code", "typeName", "fieldName" } } ] }'
+  mutation_shape: 'data.<mutation>.userErrors[] { code, field[], message } — typed per mutation family'
+observed:
+- code: -32000
+  surface: https://mudwtr.com/api/ucp/mcp
+  message: AuthenticationRequired
+  data: >-
+    Unauthorized: A valid JWT is required to call <tool>. See
+    https://shopify.dev/docs/agents/get-started/authentication for instructions on generating a token
+    and authenticating your requests.
+  remediation: Obtain a Shopify agent JWT and send it as a bearer token.
+  probed: '2026-08-26'
+- code: -32001
+  surface: https://mudwtr.com/api/ucp/mcp
+  message: UCP discovery failed
+  data: '{ "code": "invalid_profile_url", "content": "Unable to fetch agent profile: Missing profile uri", "continue_url": "https://mud-wtr.myshopify.com/" }'
+  remediation: Pass a resolvable agent profile URI in meta.ucp-agent.profile on every tool call.
+  probed: '2026-08-26'
+- code: undefinedField
+  surface: https://mudwtr.com/api/2025-10/graphql.json
+  message: "Field '<name>' doesn't exist on type 'QueryRoot'"
+  remediation: Validate the query against graphql/mud-wtr-storefront.graphql before sending.
+  probed: '2026-08-26'
+code_families:
+- name: CartErrorCode
+  count: 55
+  applies_to: cart mutations (cartLinesAdd, cartLinesUpdate, cartDeliveryAddresses*, cartDiscountCodesUpdate, …)
+  notable: [INVALID, INVALID_MERCHANDISE_LINE, MERCHANDISE_NOT_APPLICABLE, MISSING_DISCOUNT_CODE,
+    INVALID_DELIVERY_OPTION, PENDING_DELIVERY_GROUPS, INVALID_PAYMENT, PAYMENT_METHOD_NOT_SUPPORTED,
+    MISSING_CUSTOMER_ACCESS_TOKEN, MINIMUM_NOT_MET, MAXIMUM_EXCEEDED, TOO_MANY_DELIVERY_ADDRESSES,
+    INVALID_ZIP_CODE_FOR_COUNTRY, ZIP_CODE_NOT_SUPPORTED, PROVINCE_NOT_FOUND]
+- name: SubmissionErrorCode
+  count: 95
+  applies_to: cartSubmitForCompletion / complete_checkout
+  notable: [ERROR, NO_DELIVERY_GROUP_SELECTED, BUYER_IDENTITY_EMAIL_REQUIRED, DELIVERY_ADDRESS_REQUIRED,
+    DELIVERY_NO_DELIVERY_AVAILABLE, DELIVERY_INVALID_POSTAL_CODE_FOR_COUNTRY,
+    MERCHANDISE_NOT_ENOUGH_STOCK_AVAILABLE, MERCHANDISE_LINE_LIMIT_REACHED]
+  note: The single largest failure surface an agent will hit; almost all of it is address validation.
+- name: CompletionErrorCode
+  count: 13
+  applies_to: cartCompletionAttempt / checkout completion
+  notable: [ERROR, INVENTORY_RESERVATION_ERROR, PAYMENT_ERROR, PAYMENT_TRANSIENT_ERROR,
+    PAYMENT_AMOUNT_TOO_SMALL, PAYMENT_GATEWAY_NOT_ENABLED_ERROR, PAYMENT_INSUFFICIENT_FUNDS,
+    PAYMENT_INVALID_PAYMENT_METHOD, PAYMENT_INVALID_CURRENCY, PAYMENT_INVALID_CREDIT_CARD,
+    PAYMENT_INVALID_BILLING_ADDRESS, PAYMENT_CARD_DECLINED, PAYMENT_CALL_ISSUER]
+  note: >-
+    This is the nearest thing MUD\WTR has to a decline-code reference. It is the buyer-facing subset
+    Shopify surfaces to a storefront; the acquirer's raw decline codes are not exposed. No separate
+    decline-codes artifact was written because MUD\WTR is a merchant, not a payments provider.
+  retry_guidance:
+    transient: [PAYMENT_TRANSIENT_ERROR, INVENTORY_RESERVATION_ERROR]
+    do_not_retry: [PAYMENT_CARD_DECLINED, PAYMENT_INSUFFICIENT_FUNDS, PAYMENT_INVALID_CREDIT_CARD,
+      PAYMENT_INVALID_BILLING_ADDRESS, PAYMENT_CALL_ISSUER]
+- name: CustomerErrorCode
+  count: 15
+  applies_to: customer mutations
+  notable: [BLANK, INVALID, TAKEN, UNIDENTIFIED_CUSTOMER, CUSTOMER_DISABLED, TOKEN_INVALID, NOT_FOUND, BAD_DOMAIN]
+- name: UserErrorsShopPayPaymentRequestSessionUserErrorsCode
+  count: 3
+  applies_to: shopPayPaymentRequestSessionCreate / Submit
+  notable: [PAYMENT_REQUEST_INVALID_INPUT, PAYMENT_REQUEST_NOT_FOUND, IDEMPOTENCY_KEY_ALREADY_USED]
+- name: MetafieldsSetUserErrorCode
+  count: 10
+  applies_to: cartMetafieldsSet
+- name: MetafieldDeleteErrorCode
+  count: 3
+  applies_to: cartMetafieldDelete

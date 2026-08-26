@@ -1,23 +1,156 @@
 aid: mud-wtr
 name: Mud\Wtr
-description: 'Mud\Wtr is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'MUD\WTR is a certified-organic coffee alternative built on adaptogenic mushrooms and
+  botanicals, sold direct-to-consumer from mudwtr.com. It publishes no traditional developer program,
+  but its Shopify-hosted storefront exposes a substantial, entirely anonymous machine surface on its
+  own domain: an agents.md/llms.txt agent contract, a Universal Commerce Protocol (UCP) merchant
+  profile at /.well-known/ucp, two live Model Context Protocol servers (a 13-tool UCP commerce server
+  and a 5-tool Storefront MCP server), an anonymously introspectable Storefront GraphQL API, and the
+  storefront JSON endpoints for products, collections and cart.'
+image: https://mudwtr.com/cdn/shop/files/mud-tin_1200x1200.jpg?v=1614300033
 url: https://raw.githubusercontent.com/api-evangelist/mud-wtr/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-26'
 modified: '2026-08-26'
 tags:
 - Company
-apis: []
+- Commerce
+- E-Commerce
+- Retail
+- Consumer Goods
+- Food and Beverage
+- Shopify
+- Agentic Commerce
+- MCP
+- GraphQL
+- UCP
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: mud-wtr-ucp-commerce-mcp
+  name: MUD\WTR UCP Commerce MCP Server
+  description: 'Universal Commerce Protocol (UCP) shopping service, exposed over MCP at
+    https://mudwtr.com/api/ucp/mcp. Server identifies itself as "universal-commerce" 0.1.0 speaking MCP
+    protocol 2025-06-18 and UCP 2026-04-08. tools/list answers anonymously with 13 tools covering
+    catalog search/lookup, cart create/read/update/cancel, checkout create/read/update/complete/cancel,
+    and order lookup. Checkout completion requires contemporaneous buyer approval.'
+  humanURL: https://mudwtr.com/agents.md
+  baseURL: https://mudwtr.com/api/ucp/mcp
+  tags:
+  - MCP
+  - Commerce
+  - Checkout
+  - Cart
+  - Catalog
+  properties:
+  - type: MCPServer
+    url: mcp/mud-wtr-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/mud-wtr-tool-crosswalk.yml
+- aid: mud-wtr-storefront-mcp
+  name: MUD\WTR Storefront MCP Server
+  description: 'Shopify Storefront MCP server at https://mudwtr.com/api/mcp, identifying itself as
+    "storefront-renderer" 0.1.0 on MCP protocol 2025-06-18. Five anonymous tools: search_catalog,
+    get_product_details, get_cart, update_cart and search_shop_policies_and_faqs.'
+  humanURL: https://mudwtr.com/agents.md
+  baseURL: https://mudwtr.com/api/mcp
+  tags:
+  - MCP
+  - Catalog
+  - Cart
+  - Policies
+  properties:
+  - type: MCPServer
+    url: mcp/mud-wtr-mcp.yml
+- aid: mud-wtr-storefront-graphql
+  name: MUD\WTR Storefront GraphQL API
+  description: 'Shopify Storefront GraphQL API served on the company''s own host at
+    https://mudwtr.com/api/2025-10/graphql.json. Full introspection answers anonymously: 414 types, 34
+    query root fields and 41 mutations covering products, collections, blogs, pages, menus, search,
+    cart lifecycle and customer accounts. Query cost is returned in extensions.cost.'
+  humanURL: https://mudwtr.com/llms.txt
+  baseURL: https://mudwtr.com/api/2025-10/graphql.json
+  tags:
+  - GraphQL
+  - Storefront
+  - Commerce
+  - Catalog
+  properties:
+  - type: GraphQL
+    url: graphql/mud-wtr-storefront.graphql
+  - type: Introspection
+    url: graphql/mud-wtr-storefront-introspection.json
+  - type: DataModel
+    url: data-model/mud-wtr-data-model.yml
+- aid: mud-wtr-storefront-json
+  name: MUD\WTR Storefront JSON Endpoints
+  description: 'Anonymous read-only JSON over the storefront: /products.json and /collections.json for
+    the catalog, /products/{handle}.json and /collections/{handle}/products.json for single resources,
+    and /cart.js for the session cart. Documented in the store''s own /agents.md and /llms.txt.'
+  humanURL: https://mudwtr.com/llms.txt
+  baseURL: https://mudwtr.com
+  tags:
+  - JSON
+  - Catalog
+  - Cart
 common:
+- type: DomainSecurity
+  url: security/mud-wtr-domain-security.yml
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://mudwtr.com
+- type: Blog
+  url: https://mudwtr.com/blogs/trends-with-benefits
+- type: TermsOfService
+  url: https://mudwtr.com/policies/terms-of-service
+- type: PrivacyPolicy
+  url: https://mudwtr.com/policies/privacy-policy
+- type: RefundPolicy
+  url: https://mudwtr.com/policies/refund-policy
+- type: SignUp
+  url: https://mudwtr.com/account/login
+- type: Wholesale
+  url: https://mudwtr.com/pages/wholesale
+- type: LLMsTxt
+  url: llms/mud-wtr-llms.txt
+- type: AgentInstructions
+  url: llms/mud-wtr-agents.md
+- type: WellKnown
+  url: well-known/mud-wtr-well-known.yml
+- type: Authentication
+  url: authentication/mud-wtr-authentication.yml
+- type: OAuthScopes
+  url: scopes/mud-wtr-scopes.yml
+- type: Conformance
+  url: conformance/mud-wtr-conformance.yml
+- type: Lifecycle
+  url: lifecycle/mud-wtr-lifecycle.yml
+- type: Conventions
+  url: conventions/mud-wtr-conventions.yml
+- type: Idempotency
+  url: conventions/mud-wtr-conventions.yml
+- type: ErrorCatalog
+  url: errors/mud-wtr-problem-types.yml
+- type: RateLimits
+  url: rate-limits/mud-wtr-rate-limits.yml
+- type: Plans
+  url: plans/mud-wtr-plans-pricing.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DataModel
+  url: data-model/mud-wtr-data-model.yml
+- type: ToolCrosswalk
+  url: mcp/mud-wtr-tool-crosswalk.yml
+- type: MCPServer
+  url: mcp/mud-wtr-mcp.yml
+- type: GraphQL
+  url: graphql/mud-wtr-storefront.graphql
+x-enrichment:
+  date: '2026-08-26'
+  status: enriched
+  artifacts_added: 27
+  pass: local-v1

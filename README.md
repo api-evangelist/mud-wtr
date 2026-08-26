@@ -64,5 +64,8 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Mud\Wtr is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.nasdaqprivatemarket.com/
+MUD\WTR is a certified-organic coffee alternative built on adaptogenic mushrooms and botanicals, sold direct-to-consumer from mudwtr.com. It publishes no traditional developer program, but its Shopify-hosted storefront exposes a substantial, entirely anonymous machine surface on its own domain: an `agents.md`/`llms.txt` agent contract, a Universal Commerce Protocol (UCP) merchant profile at `/.well-known/ucp`, two live Model Context Protocol servers, an anonymously introspectable Storefront GraphQL API, and the storefront JSON endpoints for products, collections and cart.
+
+- https://mudwtr.com
+- https://mudwtr.com/agents.md
+- https://mudwtr.com/.well-known/ucp
