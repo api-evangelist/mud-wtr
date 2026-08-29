@@ -7,6 +7,17 @@ description: 'MUD\WTR is a certified-organic coffee alternative built on adaptog
   profile at /.well-known/ucp, two live Model Context Protocol servers (a 13-tool UCP commerce server
   and a 5-tool Storefront MCP server), an anonymously introspectable Storefront GraphQL API, and the
   storefront JSON endpoints for products, collections and cart.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://mudwtr.com/cdn/shop/files/mud-tin_1200x1200.jpg?v=1614300033
 url: https://raw.githubusercontent.com/api-evangelist/mud-wtr/refs/heads/main/apis.yml
 x-type: company
