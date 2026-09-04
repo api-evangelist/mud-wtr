@@ -18,6 +18,21 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+accessModel:
+  pricing: unknown
+  onboarding: open
+  trial: false
+  try_now: false
+  public: true
+  label: Open access
+  confidence: medium
+  source:
+  - authentication
+  - scopes
+  - rate-limits
+  - security
+  generated: '2026-09-02'
+  method: derived
 image: https://mudwtr.com/cdn/shop/files/mud-tin_1200x1200.jpg?v=1614300033
 url: https://raw.githubusercontent.com/api-evangelist/mud-wtr/refs/heads/main/apis.yml
 x-type: company
