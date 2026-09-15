@@ -1,12 +1,12 @@
 aid: mud-wtr
 name: Mud\Wtr
-description: 'MUD\WTR is a certified-organic coffee alternative built on adaptogenic mushrooms and
-  botanicals, sold direct-to-consumer from mudwtr.com. It publishes no traditional developer program,
-  but its Shopify-hosted storefront exposes a substantial, entirely anonymous machine surface on its
-  own domain: an agents.md/llms.txt agent contract, a Universal Commerce Protocol (UCP) merchant
-  profile at /.well-known/ucp, two live Model Context Protocol servers (a 13-tool UCP commerce server
-  and a 5-tool Storefront MCP server), an anonymously introspectable Storefront GraphQL API, and the
-  storefront JSON endpoints for products, collections and cart.'
+description: 'MUD\WTR is a certified-organic coffee alternative built on adaptogenic mushrooms and botanicals,
+  sold direct-to-consumer from mudwtr.com. It publishes no traditional developer program, but its Shopify-hosted
+  storefront exposes a substantial, entirely anonymous machine surface on its own domain: an agents.md/llms.txt
+  agent contract, a Universal Commerce Protocol (UCP) merchant profile at /.well-known/ucp, two live Model
+  Context Protocol servers (a 13-tool UCP commerce server and a 5-tool Storefront MCP server), an anonymously
+  introspectable Storefront GraphQL API, and the storefront JSON endpoints for products, collections and
+  cart.'
 deliveryModel:
   model: saas
   open_source: false
@@ -58,13 +58,13 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 apis:
-- aid: mud-wtr-ucp-commerce-mcp
+- aid: mud-wtr:mud-wtr-ucp-commerce-mcp
   name: MUD\WTR UCP Commerce MCP Server
-  description: 'Universal Commerce Protocol (UCP) shopping service, exposed over MCP at
-    https://mudwtr.com/api/ucp/mcp. Server identifies itself as "universal-commerce" 0.1.0 speaking MCP
-    protocol 2025-06-18 and UCP 2026-04-08. tools/list answers anonymously with 13 tools covering
-    catalog search/lookup, cart create/read/update/cancel, checkout create/read/update/complete/cancel,
-    and order lookup. Checkout completion requires contemporaneous buyer approval.'
+  description: Universal Commerce Protocol (UCP) shopping service, exposed over MCP at https://mudwtr.com/api/ucp/mcp.
+    Server identifies itself as "universal-commerce" 0.1.0 speaking MCP protocol 2025-06-18 and UCP 2026-04-08.
+    tools/list answers anonymously with 13 tools covering catalog search/lookup, cart create/read/update/cancel,
+    checkout create/read/update/complete/cancel, and order lookup. Checkout completion requires contemporaneous
+    buyer approval.
   humanURL: https://mudwtr.com/agents.md
   baseURL: https://mudwtr.com/api/ucp/mcp
   tags:
@@ -78,11 +78,11 @@ apis:
     url: mcp/mud-wtr-mcp.yml
   - type: ToolCrosswalk
     url: mcp/mud-wtr-tool-crosswalk.yml
-- aid: mud-wtr-storefront-mcp
+- aid: mud-wtr:mud-wtr-storefront-mcp
   name: MUD\WTR Storefront MCP Server
-  description: 'Shopify Storefront MCP server at https://mudwtr.com/api/mcp, identifying itself as
-    "storefront-renderer" 0.1.0 on MCP protocol 2025-06-18. Five anonymous tools: search_catalog,
-    get_product_details, get_cart, update_cart and search_shop_policies_and_faqs.'
+  description: 'Shopify Storefront MCP server at https://mudwtr.com/api/mcp, identifying itself as "storefront-renderer"
+    0.1.0 on MCP protocol 2025-06-18. Five anonymous tools: search_catalog, get_product_details, get_cart,
+    update_cart and search_shop_policies_and_faqs.'
   humanURL: https://mudwtr.com/agents.md
   baseURL: https://mudwtr.com/api/mcp
   tags:
@@ -93,12 +93,12 @@ apis:
   properties:
   - type: MCPServer
     url: mcp/mud-wtr-mcp.yml
-- aid: mud-wtr-storefront-graphql
+- aid: mud-wtr:mud-wtr-storefront-graphql
   name: MUD\WTR Storefront GraphQL API
-  description: 'Shopify Storefront GraphQL API served on the company''s own host at
-    https://mudwtr.com/api/2025-10/graphql.json. Full introspection answers anonymously: 414 types, 34
-    query root fields and 41 mutations covering products, collections, blogs, pages, menus, search,
-    cart lifecycle and customer accounts. Query cost is returned in extensions.cost.'
+  description: 'Shopify Storefront GraphQL API served on the company''s own host at https://mudwtr.com/api/2025-10/graphql.json.
+    Full introspection answers anonymously: 414 types, 34 query root fields and 41 mutations covering
+    products, collections, blogs, pages, menus, search, cart lifecycle and customer accounts. Query cost
+    is returned in extensions.cost.'
   humanURL: https://mudwtr.com/llms.txt
   baseURL: https://mudwtr.com/api/2025-10/graphql.json
   tags:
@@ -113,7 +113,7 @@ apis:
     url: graphql/mud-wtr-storefront-introspection.json
   - type: DataModel
     url: data-model/mud-wtr-data-model.yml
-- aid: mud-wtr-storefront-json
+- aid: mud-wtr:mud-wtr-storefront-json
   name: MUD\WTR Storefront JSON Endpoints
   description: 'Anonymous read-only JSON over the storefront: /products.json and /collections.json for
     the catalog, /products/{handle}.json and /collections/{handle}/products.json for single resources,
