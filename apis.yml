@@ -90,6 +90,9 @@ apis:
     url: mcp/mud-wtr-mcp.yml
   - type: ToolCrosswalk
     url: mcp/mud-wtr-tool-crosswalk.yml
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: ucp
 - aid: mud-wtr:mud-wtr-storefront-mcp
   name: MUD\WTR Storefront MCP Server
   description: 'Shopify Storefront MCP server at https://mudwtr.com/api/mcp, identifying itself as "storefront-renderer"
@@ -105,6 +108,9 @@ apis:
   properties:
   - type: MCPServer
     url: mcp/mud-wtr-mcp.yml
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: storefront-mcp
 - aid: mud-wtr:mud-wtr-storefront-graphql
   name: MUD\WTR Storefront GraphQL API
   description: 'Shopify Storefront GraphQL API served on the company''s own host at https://mudwtr.com/api/2025-10/graphql.json.
@@ -125,17 +131,22 @@ apis:
     url: graphql/mud-wtr-storefront-introspection.json
   - type: DataModel
     url: data-model/mud-wtr-data-model.yml
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: storefront-graphql
 - aid: mud-wtr:mud-wtr-storefront-json
   name: MUD\WTR Storefront JSON Endpoints
   description: 'Anonymous read-only JSON over the storefront: /products.json and /collections.json for
     the catalog, /products/{handle}.json and /collections/{handle}/products.json for single resources,
     and /cart.js for the session cart. Documented in the store''s own /agents.md and /llms.txt.'
   humanURL: https://mudwtr.com/llms.txt
-  baseURL: https://mudwtr.com
   tags:
   - JSON
   - Catalog
   - Cart
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: storefront-json
 common:
 - type: DomainSecurity
   url: security/mud-wtr-domain-security.yml
