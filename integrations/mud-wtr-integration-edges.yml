@@ -1,0 +1,16 @@
+generated: '2026-10-12'
+method: none
+source:
+- https://zapier.com/apps/mud-wtr/integrations
+- https://n8n.io/integrations/mud-wtr/
+- https://composio.dev/toolkits/mud-wtr
+- https://monid.ai/tools/mud-wtr
+checked:
+- https://composio.dev/toolkits/mud-wtr
+- https://monid.ai/tools/mud-wtr
+- https://n8n.io/integrations/mud-wtr/
+- https://zapier.com/apps/mud-wtr/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []
