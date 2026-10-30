@@ -64,8 +64,117 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-MUD\WTR is a certified-organic coffee alternative built on adaptogenic mushrooms and botanicals, sold direct-to-consumer from mudwtr.com. It publishes no traditional developer program, but its Shopify-hosted storefront exposes a substantial, entirely anonymous machine surface on its own domain: an `agents.md`/`llms.txt` agent contract, a Universal Commerce Protocol (UCP) merchant profile at `/.well-known/ucp`, two live Model Context Protocol servers, an anonymously introspectable Storefront GraphQL API, and the storefront JSON endpoints for products, collections and cart.
+MUD\WTR is a certified-organic coffee alternative built on adaptogenic mushrooms and botanicals, sold direct-to-consumer from mudwtr.com. It publishes no traditional developer program, but its Shopify-hosted storefront exposes a substantial, entirely anonymous machine surface on its own domain: an agents.md/llms.txt agent contract, a Universal Commerce Protocol (UCP) merchant profile at /.well-known/ucp, two live Model Context Protocol servers (a 13-tool UCP commerce server and a 5-tool Storefront MCP server), an anonymously introspectable Storefront GraphQL API, and the storefront JSON endpoints for products, collections and cart.
 
-- https://mudwtr.com
-- https://mudwtr.com/agents.md
-- https://mudwtr.com/.well-known/ucp
+**Areas:** Company · Commerce · E-Commerce · Retail · Consumer Goods · Food and Beverage · Shopify · Agentic Commerce · MCP · GraphQL · Universal Commerce Protocol
+
+## Mud\Wtr on APIs.io
+
+Everything profiled for Mud\Wtr is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/mud-wtr/](https://apis.io/providers/mud-wtr/)** — or go straight to one of the APIs or properties below.
+
+### APIs (4)
+
+- [MUD\WTR UCP Commerce MCP Server](https://apis.io/apis/mud-wtr/mud-wtr-ucp-commerce-mcp/) — Universal Commerce Protocol (UCP) shopping service, exposed over MCP at https://mudwtr.com/api/ucp/mcp. Server identifies itself as "universal-commerce"…
+- [MUD\WTR Storefront MCP Server](https://apis.io/apis/mud-wtr/mud-wtr-storefront-mcp/) — Shopify Storefront MCP server at https://mudwtr.com/api/mcp, identifying itself as "storefront-renderer" 0.1.0 on MCP protocol 2025-06-18. Five anonymous…
+- [MUD\WTR Storefront GraphQL API](https://apis.io/apis/mud-wtr/mud-wtr-storefront-graphql/) — Shopify Storefront GraphQL API served on the company's own host at https://mudwtr.com/api/2025-10/graphql.json. Full introspection answers anonymously: 414…
+- [MUD\WTR Storefront JSON Endpoints](https://apis.io/apis/mud-wtr/mud-wtr-storefront-json/) — Anonymous read-only JSON over the storefront: /products.json and /collections.json for the catalog, /products/{handle}.json and…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [mud-wtr-mcp.yml](https://apis.io/servers/mud-wtr/mud-wtr-mcp-yml/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Mud Wtr Authentication](https://apis.io/security/mud-wtr/mud-wtr-authentication/)
+- [Mud Wtr Domain Security](https://apis.io/security/mud-wtr/mud-wtr-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Mud Wtr Scopes](https://apis.io/scopes/mud-wtr/mud-wtr-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Mud Wtr Plans Pricing](https://apis.io/plans/mud-wtr/mud-wtr-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Mud Wtr Rate Limits](https://apis.io/rate-limits/mud-wtr/mud-wtr-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://mudwtr.com)
+- [Sign up](https://mudwtr.com/account/login)
+- [Blog](https://mudwtr.com/blogs/trends-with-benefits)
+- [Terms of service](https://mudwtr.com/policies/terms-of-service)
+- [Privacy policy](https://mudwtr.com/policies/privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 24.6** — emerging · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.7 |
+| Contract quality | 9.3 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 16.1 |
+| Access clarity | 34.2 |
+
+**Agent readiness 35.3** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | derived (partial credit) |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | platform (partial credit) |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 34.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/mud-wtr/](https://apis.io/providers/mud-wtr/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Mud\Wtr: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/mud-wtr/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
